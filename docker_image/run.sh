@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ex
-docker run -v $PWD/../:/root/catkin_ws/src/deep_learning_motion_planning \
+docker run -v $PWD/../:/root/deep_learning_motion_planning \
 	-e DISPLAY=":1" \
 	-e QT_X11_NO_MITSHM=1 \
 	-e XAUTHORITY \
