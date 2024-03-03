@@ -58,17 +58,23 @@ ENV PATH=/root/castxml/bin:${PATH}
 RUN apt-get update && \
       apt-get -y install sudo libeigen3-dev
 
-RUN sudo -H python3.8 -m pip install -vU pygccxml pyplusplus numpy
-
-## Install yaml-cpp parser
-RUN git clone https://github.com/jbeder/yaml-cpp.git && cd yaml-cpp && mkdir build && cd build && cmake -DBUILD_SHARED_LIBS=ON .. && make && make install
+RUN sudo -H pip3 install -vU pygccxml pyplusplus numpy
 
 # then install ompl
 RUN git clone https://github.com/ompl/ompl.git && cd ompl && mkdir -p build/Release && cd build/Release && \
-    cmake ../.. -DPYTHON_EXEC=/usr/bin/python3.8  -DCASTXML=/root/castxml/bin/castxml -DBOOST_ROOT=/root/boost_1_76_0 -DBOOST_LIBRARYDIR=/root/boost_1_76_0/lib && make update_bindings && make -j$(nproc) && make install -j$(nproc)
+    cmake ../.. -DPYTHON_EXEC=/usr/bin/python3 -DCASTXML=/root/castxml/bin/castxml && make -j$(nproc) update_bindings && make -j$(nproc) && make install
 
-# uninstall yaml-cpp (not the original one)
-RUN cd yaml-cpp/build && make uninstall
+RUN sudo -H python3.8 -m pip install -vU pygccxml pyplusplus numpy
+
+# ## Install yaml-cpp parser
+# RUN git clone https://github.com/jbeder/yaml-cpp.git && cd yaml-cpp && mkdir build && cd build && cmake -DBUILD_SHARED_LIBS=ON .. && make && make install
+
+# then install ompl for python3.8
+RUN cd ompl && mkdir -p build_python3.8/Release && cd build_python3.8/Release && \
+    cmake ../.. -DPYTHON_EXEC=/usr/bin/python3.8  -DCASTXML=/root/castxml/bin/castxml && make -j$(nproc) update_bindings && make -j$(nproc) && make install -j$(nproc)
+
+# # uninstall yaml-cpp (not the original one)
+# RUN cd yaml-cpp/build && make uninstall
 
 # install libtorch
 RUN apt-get install unzip && wget https://download.pytorch.org/libtorch/cu117/libtorch-cxx11-abi-shared-with-deps-2.0.0%2Bcu117.zip && unzip libtorch-cxx11-abi-shared-with-deps-2.0.0+cu117.zip
@@ -84,7 +90,6 @@ RUN pip3 install --ignore-installed pyzmq && pip3 install jupyter
 
 # Expose the port Jupyter will run on
 EXPOSE 8888
-
 
 # install open3d
 RUN python3.8 -m pip install --ignore-installed scikit-learn PyYAML && python3.8 -m pip install open3d
