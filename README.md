@@ -29,6 +29,17 @@ python3.8 generate_rect_dataset.py -rows 10 -width 10 -items 10
 The rows and width are the size of the maze. The items is the number of mazes you want to generate. After you run the code, there should be a directory called **rectangular_mazes_...** generated in the same directory. All the mazes are saved as the png files in the images directory of the **rectangular_mazes_...** directory.
 
 ### Generate solution trajectories.
-In here, to train the deep learning model, we need to generate the solution trajectories for the mazes. Thus, we will use ompl to first generate the solution trajectories for the mazes. 
+In here, to train the deep learning model, we need to generate the solution trajectories for the mazes. Thus, we will use the rrt-star from ompl to first generate the solution trajectories for the mazes. 
 
-TODO: Add the code to generate the solution trajectories.
+```
+cd [where DEEP_LEARNING_MOTION_PLANNING is located]/trajectory_generation
+python3.8 trajectory_generation.py
+```
+
+In this trajectory_generation.py, there are following parameters you can change.
+
+ * maze_path: The path to maze dataset.
+ * number_of_traj_for_each_maze: The number of collision free trajectories for each maze.
+ * time_limit_for_each_start_goal_pair: The planning time limit for the rrt-star.
+
+After you run the code, a new directory called 'images_result' will be generated in **rectangular_mazes_...** directory. For each maze image, it will generate a png image with all generate trajectories and a txt file with all the trajectories.
