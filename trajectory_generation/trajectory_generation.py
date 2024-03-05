@@ -129,7 +129,8 @@ def generate_solution_for_on_maze(maze_img, number_of_traj=1, planning_time=0.3)
 if __name__ == "__main__":
 
     ############################## Parameters #################################
-    maze_path = '../maze/src/datasets/rectangular_mazes_1709525567'
+    # maze_path = '../maze/src/datasets/rectangular_mazes_1709525567' # rectanglar maze
+    maze_path = '../maze' # random maze
     number_of_traj_for_each_maze = 10
     time_limit_for_each_start_goal_pair = 0.3
     ###########################################################################

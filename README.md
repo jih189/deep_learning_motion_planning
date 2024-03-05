@@ -28,6 +28,14 @@ python3.8 generate_rect_dataset.py -rows 10 -width 10 -items 10
 ```
 The rows and width are the size of the maze. The items is the number of mazes you want to generate. After you run the code, there should be a directory called **rectangular_mazes_...** generated in the same directory. All the mazes are saved as the png files in the images directory of the **rectangular_mazes_...** directory.
 
+### Generate random 2D mazes
+You can also generate a random 2D maze with only triangles, rectangles, and circles. You can use the following command to generate a random 2D maze.
+```
+cd [where DEEP_LEARNING_MOTION_PLANNING is located]/maze
+python3.8 create_random_obstacle.py --image_width 512 --image_height 512 --number_of_obstacles 10 --number_of_image 10
+```
+The image_width and image_height are the size of the maze. The number_of_obstacles is the number of obstacles in the maze. The number_of_image is the number of mazes you want to generate.
+
 ### Generate solution trajectories.
 In here, to train the deep learning model, we need to generate the solution trajectories for the mazes. Thus, we will use the rrt-star from ompl to first generate the solution trajectories for the mazes. 
 
