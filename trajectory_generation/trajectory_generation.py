@@ -74,6 +74,8 @@ def generate_solution_for_on_maze(maze_img, number_of_traj=1, planning_time=0.3)
 
     # use rrt* planner
     planner = og.RRTstar(ss.getSpaceInformation())
+    step_size = 0.1
+    planner.setRange(step_size)
     ss.setPlanner(planner)
 
     solution_traj = []
@@ -112,7 +114,7 @@ def generate_solution_for_on_maze(maze_img, number_of_traj=1, planning_time=0.3)
             # print("Found solution")
             # get the solution path
             path = ss.getSolutionPath()
-            path.interpolate(1000)
+            path.interpolate(10)
             traj = []
             for i in range(path.getStateCount()):
                 state = path.getState(i)
