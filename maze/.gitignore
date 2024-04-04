@@ -4,4 +4,4 @@ __pycache__
 .vscode
 src/gallery/
 src/datasets/images/
-rectangular_mazes_*
+rectangular_mazes

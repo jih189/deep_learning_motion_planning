@@ -109,4 +109,7 @@ RUN python3.8 -m pip install einops
 RUN python3.8 -m pip install tensorboard
 
 # need to install opencv
-RUN python3.8 -m pip install opencv-python open3d --ignore-installed PyYAML
+RUN python3.8 -m pip install opencv-python open3d --ignore-installed PyYAML redis
+
+# install s3cmd
+RUN apt-get update && apt-get install -y s3cmd

@@ -28,13 +28,20 @@ class RectangularDataset:
     def create_dataset(self):
         start_time = time.time()
 
-        seconds = math.floor(time.time())
+        # seconds = math.floor(time.time())
         cwd_path = './'
-        ds_name = f'rectangular_mazes_{seconds}'
+        # ds_name = f'rectangular_mazes_{seconds}'
+        ds_name = f'rectangular_mazes'
 
         # create a folder for this dataset in current directory
         dataset_directory = cwd_path + ds_name
         dataset_images_dir = f'{dataset_directory}/images/'
+
+        # if dataset directory already exists, remove it
+        if Path(dataset_directory).exists():
+            import shutil
+            shutil.rmtree(dataset_directory)
+
         Path(dataset_directory).mkdir(parents=True)
         Path(dataset_images_dir).mkdir()
 

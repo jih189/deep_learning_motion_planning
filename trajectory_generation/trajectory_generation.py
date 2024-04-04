@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import tqdm
 from maze_planner import MazeStateValidityChecker
+from multiprocessing import Pool
 
 # only print error messages
 ou.setLogLevel(ou.LOG_ERROR)
@@ -127,14 +128,37 @@ def generate_solution_for_on_maze(maze_img, number_of_traj=1, planning_time=0.3)
 
     return solution_traj
     
+def parallel_process_function(input):
+    img_path, maze_solution_path, draw_result = input
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+
+    # generate the solution
+    result_traj = generate_solution_for_on_maze(img, number_of_traj_for_each_maze, time_limit_for_each_start_goal_pair)
+
+    # get the name of the file
+    file_name = img_path.split('/')[-1]
+
+    # get name only without extension
+    file_name_without_extension = file_name.split('.')[0]
+
+    save_traj_to_file(result_traj, maze_solution_path + file_name_without_extension + '.txt')
+
+    if draw_result:
+        # draw the result
+        result_img = draw_maze(img, result_traj)
+
+        # save the result
+        cv2.imwrite(maze_solution_path + file_name, result_img)
+
 # main function
 if __name__ == "__main__":
 
     ############################## Parameters #################################
-    # maze_path = '../maze/src/datasets/rectangular_mazes_1709525567' # rectanglar maze
-    maze_path = '../maze' # random maze
+    maze_path = '../maze/src/datasets/rectangular_mazes' # rectanglar maze
+    # maze_path = '../maze' # random maze
     number_of_traj_for_each_maze = 10
-    time_limit_for_each_start_goal_pair = 0.3
+    time_limit_for_each_start_goal_pair = 0.5
+    draw_result = False
     ###########################################################################
     maze_images_path = maze_path + '/images/'
     maze_solution_path = maze_path + '/images_result/'
@@ -148,7 +172,7 @@ if __name__ == "__main__":
     # print all files' name in the directory
     for root, dirs, files in os.walk(maze_images_path):
         for file in files:
-            maze_img_path_set.append(os.path.join(root, file))
+            maze_img_path_set.append((os.path.join(root, file), maze_solution_path, draw_result))
 
     # create the result directory. If it exists, then remove it and create a new one
     if os.path.exists(maze_solution_path):
@@ -156,23 +180,8 @@ if __name__ == "__main__":
         shutil.rmtree(maze_solution_path)
     os.makedirs(maze_solution_path)
 
-    # load the image
-    for img_path in tqdm.tqdm(maze_img_path_set):
-        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    cpu_count = os.cpu_count()
+    print("number of cpu: ", cpu_count)
 
-        # generate the solution
-        result_traj = generate_solution_for_on_maze(img, number_of_traj_for_each_maze, time_limit_for_each_start_goal_pair)
-
-        # draw the result
-        result_img = draw_maze(img, result_traj)
-
-        # get the name of the file
-        file_name = img_path.split('/')[-1]
-
-        # get name only without extension
-        file_name_without_extension = file_name.split('.')[0]
-
-        save_traj_to_file(result_traj, maze_solution_path + file_name_without_extension + '.txt')
-
-        # save the result
-        cv2.imwrite(maze_solution_path + file_name, result_img)
+    with Pool(cpu_count) as p:
+        r = list(tqdm.tqdm(p.imap(parallel_process_function, maze_img_path_set), total=len(maze_img_path_set)))
