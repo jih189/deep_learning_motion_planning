@@ -156,7 +156,7 @@ if __name__ == "__main__":
     ############################## Parameters #################################
     maze_path = '../maze/src/datasets/rectangular_mazes' # rectanglar maze
     # maze_path = '../maze' # random maze
-    number_of_traj_for_each_maze = 10
+    number_of_traj_for_each_maze = 100
     time_limit_for_each_start_goal_pair = 0.5
     draw_result = False
     ###########################################################################
