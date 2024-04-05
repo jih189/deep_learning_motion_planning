@@ -179,9 +179,6 @@ if __name__ == "__main__":
     dataset_dir = "/root/deep_learning_motion_planning/rectangular_mazes"
     dataset = MazeDataset(dataset_dir, DatasetType.TRAIN)
     maze_image, start_goal_block, solution_block = dataset[0]
-    
-    # maze image is 100x100, and copy itself to number of start_goal_block times
-    maze_image = maze_image.repeat(start_goal_block.shape[0], 1, 1)
 
     # (solution_block, maze_image, start_goal_block)
 

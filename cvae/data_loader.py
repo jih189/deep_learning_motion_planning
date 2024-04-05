@@ -37,8 +37,8 @@ class MazeDataset(Dataset):
     
         self.data_block_size = 10
 
-        # # check if each maze image has a corresponding solution
-        # assert len(self.maze_image_names) == len(self.solution_names), "Number of maze images and solutions do not match"
+        # check if each maze image has a corresponding solution
+        assert len(self.maze_image_names) == len(self.solution_names), "Number of maze images and solutions do not match"
     
     def __len__(self):
         return len(self.maze_image_names)
@@ -101,6 +101,8 @@ class MazeDataset(Dataset):
         # convert the data block to a tensor
         start_goal_block = torch.tensor(start_goal_block, dtype=torch.float32)
         solution_block = torch.tensor(solution_block, dtype=torch.float32)
+
+        maze_image = maze_image.repeat(start_goal_block.shape[0], 1, 1)
 
         return maze_image, start_goal_block, solution_block
 
