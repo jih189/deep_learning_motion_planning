@@ -1,3 +1,4 @@
 *.pyc
 images
 images_result
+maze_dataset
