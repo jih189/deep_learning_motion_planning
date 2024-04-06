@@ -113,3 +113,6 @@ RUN python3.8 -m pip install opencv-python open3d --ignore-installed PyYAML redi
 
 # install s3cmd
 RUN apt-get update && apt-get install -y s3cmd
+
+# remove zip
+RUN rm *.zip

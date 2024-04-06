@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jiaming-http # replace with ${USER_NAME}-http
+  name: jiaming-motion-planning-http # replace with ${USER_NAME}-http
   labels:
-    k8s-app: jiaming-http
+    k8s-app: jiaming-motion-planning-http
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: jiaming-http
+      k8s-app: jiaming-motion-planning-http
   template:
     metadata:
       labels:
-        k8s-app: jiaming-http
+        k8s-app: jiaming-motion-planning-http
     spec:
       containers:
-        - image: jih189/deep-learning-motion-planning:latest
+        - image: jih189/deep-learning-motion-planning:v1
           name: http-server
           command: ["sh", "-c", "sleep infinity"]
           resources:
             requests:
               cpu: "24"
-              memory: "50Gi"
+              memory: "30Gi"
               # nvidia.com/gpu: "1"
             limits:
               cpu: "30"
-              memory: "80Gi"
+              memory: "50Gi"
               # nvidia.com/gpu: "1"
           volumeMounts:
             - name: jiaming
