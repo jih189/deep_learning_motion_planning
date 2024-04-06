@@ -22,11 +22,11 @@ spec:
             requests:
               cpu: "24"
               memory: "50Gi"
-              # nvidia.com/gpu: "1"
+              nvidia.com/gpu: "2"
             limits:
               cpu: "30"
               memory: "80Gi"
-              # nvidia.com/gpu: "1"
+              nvidia.com/gpu: "2"
           volumeMounts:
             - name: jiaming
               mountPath: /jiaming
