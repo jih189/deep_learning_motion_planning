@@ -56,6 +56,9 @@ class MazeDataset(Dataset):
         # maze images are png files
         maze_image = cv2.imread(maze_image_path, cv2.IMREAD_GRAYSCALE)
 
+        maze_scale_height_ratio = 100 / maze_image.shape[0]
+        maze_scale_width_ratio = 100 / maze_image.shape[1]
+
         # scale the image to 100x100
         maze_image = cv2.resize(maze_image, (100, 100))
         maze_image = maze_image / 255.0
@@ -86,8 +89,13 @@ class MazeDataset(Dataset):
             start_point = solution[0]
             goal_point = solution[-1]
 
+            start_point = [start_point[0] * maze_scale_width_ratio, start_point[1] * maze_scale_height_ratio]
+            goal_point = [goal_point[0] * maze_scale_width_ratio, goal_point[1] * maze_scale_height_ratio]
+
             # randomly select a point from the solution
             solution_point = solution[np.random.randint(len(solution))]
+
+            solution_point = [solution_point[0] * maze_scale_width_ratio, solution_point[1] * maze_scale_height_ratio]
 
             # add the data to the data block
             # concatenate the start and goal points
