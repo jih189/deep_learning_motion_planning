@@ -91,8 +91,12 @@ class Decoder(torch.nn.Module):
         self.latent_dim = latent_dim
 
         # convolutional layers for processing the maze image
-        self.conv1 = torch.nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=2, padding=1)
-        self.conv2 = torch.nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=2, padding=1)
+        self.conv1 = torch.nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3, stride=1, padding=1)
+        self.conv2 = torch.nn.Conv2d(in_channels=8, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.conv3 = torch.nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+
+        self.pool = torch.nn.AvgPool2d(kernel_size=2, stride=2)
+
 
         # fully connected layers for processing the start and goal points
         self.fc1 = torch.nn.Linear(4, 32)
@@ -114,7 +118,11 @@ class Decoder(torch.nn.Module):
         '''
         # process the maze image
         maze_image = torch.relu(self.conv1(maze_image.unsqueeze(1)))
+        maze_image = self.pool(maze_image)
         maze_image = torch.relu(self.conv2(maze_image))
+        maze_image = self.pool(maze_image)
+        maze_image = torch.relu(self.conv3(maze_image))
+        maze_image = self.pool(maze_image)
         maze_image = maze_image.view(maze_image.size(0), -1)
 
         # process the start and goal points
