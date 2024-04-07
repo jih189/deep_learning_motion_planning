@@ -46,7 +46,7 @@ class Encoder(torch.nn.Module):
         
         # fully connected layers for processing the concatenated features
         # of the maze image, start and goal points, and point x
-        self.fc4 = torch.nn.Linear(20000 + 64 + 64, self.latent_dim * 2)
+        self.fc4 = torch.nn.Linear(18560, self.latent_dim * 2)
 
     def forward(self, x, maze_image, start_goal_points):
         '''
@@ -114,7 +114,7 @@ class Decoder(torch.nn.Module):
 
         # fully connected layers for processing the concatenated features
         # of the maze image, start and goal points, and latent representation z
-        self.fc4 = torch.nn.Linear(20000 + 64 + 64, self.input_dim)
+        self.fc4 = torch.nn.Linear(18560, self.input_dim)
 
     def forward(self, z, maze_image, start_goal_points):
         '''
