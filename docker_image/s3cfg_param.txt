@@ -1,2 +1,0 @@
-access_key = WDP3WZAV3TAT1RPX62RE
-secret_key = FDi9rOjsVWDklhTd2sP6zL9FHjJ4CWypdKgEbQZ1
